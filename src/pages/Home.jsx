@@ -5,6 +5,7 @@ import appwriteService from "../appwrite/conf";
 function Home() {
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -14,11 +15,17 @@ function Home() {
       } catch (err) {
         setError("Error fetching courses.");
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchCourses();
   }, []);
+
+  if (loading) {
+    return <div className="text-lg text-gray-600">Loading...</div>;
+  }
 
   if (error) {
     return <div className="text-lg text-red-600">{error}</div>;
@@ -28,6 +35,7 @@ function Home() {
     <div className="p-6 bg-gray-100 min-h-screen">
       <div>
         {courses.length > 0 ? (
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course) => (
               <div
