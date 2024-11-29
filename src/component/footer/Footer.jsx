@@ -23,7 +23,7 @@ function Footer() {
               <ul>
                 <li className="mb-2">
                   <Link
-                    to="/features"
+                    to="/#"
                     className="text-sm hover:text-gray-100 transition"
                   >
                     Features
@@ -31,7 +31,7 @@ function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/pricing"
+                    to="/#"
                     className="text-sm hover:text-gray-100 transition"
                   >
                     Pricing
@@ -46,7 +46,7 @@ function Footer() {
               <ul>
                 <li className="mb-2">
                   <Link
-                    to="/help"
+                    to="/#"
                     className="text-sm hover:text-gray-100 transition"
                   >
                     Help
@@ -54,7 +54,7 @@ function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/contact"
+                    to="/#"
                     className="text-sm hover:text-gray-100 transition"
                   >
                     Contact
@@ -69,7 +69,7 @@ function Footer() {
               <ul>
                 <li className="mb-2">
                   <Link
-                    to="/terms"
+                    to="/#"
                     className="text-sm hover:text-gray-100 transition"
                   >
                     Terms &amp; Conditions
@@ -77,7 +77,7 @@ function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/privacy"
+                    to="/#"
                     className="text-sm hover:text-gray-100 transition"
                   >
                     Privacy Policy
@@ -90,7 +90,7 @@ function Footer() {
 
         {/* Footer Bottom */}
         <div className="mt-8 text-center text-sm text-gray-500">
-          <p>Powered by Appwrite</p>
+          <h3>By Shripad, Lokesh, Dnyaneshwar, Athorv</h3>
         </div>
       </div>
     </footer>
