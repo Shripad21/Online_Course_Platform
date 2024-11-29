@@ -3,6 +3,7 @@ import { Container, Logo, LogoutBtn } from "../index";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import logoPath from '../../assets/images/logo.jpg'
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,7 +29,7 @@ function Header() {
           <Link to="/">
             <Logo
               width="70px"
-              logoPath="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg"
+              logoPath={logoPath}
             />
           </Link>
 
