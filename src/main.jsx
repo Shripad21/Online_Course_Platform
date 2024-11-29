@@ -11,6 +11,7 @@ import {
   AddCourse,
   AddLesson, // Import AddLesson
   CourseDetails,
+  AllCourses,
 } from "./pages/index.js";
 
 const router = createBrowserRouter([
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />,
+      },
+      {
+        path: "/all-courses",
+        element: <AllCourses />,
       },
       {
         path: "/add-course",

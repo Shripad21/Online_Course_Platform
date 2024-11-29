@@ -6,6 +6,7 @@ import Signup from './Signup'
 import AddCourse from './AddCourse'
 import CourseDetails from './CourseDetails'
 import AddLesson from './AddLesson'
+import AllCourses from './AllCourses'
 
 export {
     NoLoginMessage,
@@ -14,5 +15,6 @@ export {
     Signup,
     CourseDetails,
     AddCourse,
-    AddLesson
+    AddLesson,
+    AllCourses,
 }
