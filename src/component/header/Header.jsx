@@ -14,7 +14,6 @@ function Header() {
     { name: "Home", slug: "/", active: true },
     { name: "Login", slug: "/login", active: !authStatus },
     { name: "Signup", slug: "/signup", active: !authStatus },
-  //  { name: "All Courses", slug: "/courses", active: authStatus },
     { name: "Add Course", slug: "/add-course", active: authStatus },
     { name: "Add Lesson", slug: "/add-lesson", active: authStatus },
   ];
