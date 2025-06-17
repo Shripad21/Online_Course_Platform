@@ -12,6 +12,12 @@ import {
   AddLesson, // Import AddLesson
   CourseDetails,
   AllCourses,
+  MyCourses,
+  YourCourses,
+  AdminDashboard,
+  UpdateCourse
+  ,StudentProfile
+  ,TeacherProfile
 } from "./pages/index.js";
 
 const router = createBrowserRouter([
@@ -44,6 +50,24 @@ const router = createBrowserRouter([
         path: "/course/:id",
         element: <CourseDetails />,
       },
+      {
+  path: "/admin",
+  element: <AdminDashboard />
+},
+{
+  path: "/update-course/:id",
+  element: <UpdateCourse />,
+}
+,{
+  path: "/student-profile",
+  element: <StudentProfile />,
+},
+{
+  path: "/teacher-profile",
+  element: <TeacherProfile />,
+},
+      { path: "/your-courses", element: <YourCourses /> },  // ✅ for teachers
+      { path: "/my-courses", element: <MyCourses /> },      // ✅ for students
     ],
   },
 ]);

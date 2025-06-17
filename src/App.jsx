@@ -20,7 +20,7 @@ function App() {
   // authService.login(obj).then((userData) => console.log('login successful')) // test login // working
 
   useEffect(() => {
-    authService.getCurrentUser()
+    authService.getCurrentUserWithRole()
     .then((userData) => {
       if(userData) {
         dispatch(login(userData))

@@ -16,11 +16,13 @@ function Login() {
         setError('')
         try {
             const session = await authService.login(data)
-            if(session){
-                const userData = await authService.getCurrentUser()
-                if(userData) dispatch(authLogin(userData))
-                navigate('/')
-            }
+             if (session) {
+      const userWithRole = await authService.getCurrentUserWithRole(); // ✅ includes role
+      if (userWithRole) {
+        dispatch(authLogin(userWithRole)); // ✅ stores full user with role
+        navigate('/');
+      }
+    }
         } catch (error) {
             setError(error.message)
             
