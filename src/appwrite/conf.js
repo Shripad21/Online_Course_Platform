@@ -58,25 +58,33 @@ async getEnrolledStudentsForCourse(courseId) {
   }
 }
   // Fetch course by name
-  async getCourseByName(courseName) {
-    try {
-      if (!courseName.trim()) {
-        throw new Error("Course name cannot be empty.");
-      }
-      const response = await this.databases.listDocuments(
-        env.databaseId,
-        env.collectionId,
-        [Query.search("title", courseName)]
-      );
-      if (response.documents.length === 0) {
-        throw new Error("Course not found");
-      }
-      return response.documents[0];
-    } catch (error) {
-      console.error("appwrite service :: getCourseByName error :: ", error);
-      throw error;
+async getCourseByName(courseName) {
+  try {
+    if (!courseName.trim()) {
+      throw new Error("Course name cannot be empty.");
     }
+    
+    // Fetch all documents and filter client-side
+    const response = await this.databases.listDocuments(
+      env.databaseId,
+      env.collectionId
+    );
+    
+    // Filter for courses that contain the search term (case-insensitive)
+    const matchingCourses = response.documents.filter(doc => 
+      doc.title.toLowerCase().includes(courseName.toLowerCase())
+    );
+    
+    if (matchingCourses.length === 0) {
+      throw new Error("Course not found");
+    }
+    
+    return matchingCourses[0];
+  } catch (error) {
+    console.error("appwrite service :: getCourseByName error :: ", error);
+    throw error;
   }
+}
 
   // Upload video to Appwrite storage
   async uploadVideo(file) {

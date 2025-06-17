@@ -1,15 +1,13 @@
 import React, { useState, useCallback } from "react";
 import { Search, Upload, CheckCircle, AlertCircle, Video, Plus, Loader2 } from "lucide-react";
 import appwriteService from "../appwrite/conf"; // Adjust the import path as necessary
-const env = {
-  bucketId: 'example-bucket'
-};
+import env from "../env/env";
 
 const AddLesson = () => {
   const [courseName, setCourseName] = useState("");
   const [lessonTitle, setLessonTitle] = useState("");
   const [videoFiles, setVideoFiles] = useState([]);
-  const [courseId, setCourseId] = useState("");
+  const [courseData, setCourseData] = useState(null); // Store full course data
   const [courseFound, setCourseFound] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -43,10 +41,12 @@ const AddLesson = () => {
     
     try {
       const course = await appwriteService.getCourseByName(courseName);
-      setCourseId(course?.$id);
+      console.log("Course found:", course);
+      setCourseData(course); // Store full course data
       setCourseFound(true);
     } catch (error) {
       setCourseFound(false);
+      setCourseData(null);
       setErrors({ courseName: "Course not found" });
     } finally {
       setIsSearching(false);
@@ -73,32 +73,46 @@ const AddLesson = () => {
   }, [errors]);
 
   const handleAddLessons = async () => {
-    if (!validateForm()) return;
+    if (!validateForm() || !courseData) return;
     
     setIsUploading(true);
     setUploadProgress(0);
     
     try {
       const totalFiles = videoFiles.length;
+      const newLessons = [];
       
       for (let i = 0; i < totalFiles; i++) {
         const videoFile = videoFiles[i];
+        
+        // Upload video file
         const videoFileId = await appwriteService.uploadVideo(videoFile);
         const videoFileUrl = `https://cloud.appwrite.io/v1/storage/buckets/${env.bucketId}/files/${videoFileId}/view`;
 
-        await appwriteService.createLesson({
+        // Create lesson
+        const lesson = await appwriteService.createLesson({
           title: totalFiles > 1 ? `${lessonTitle} - Part ${i + 1}` : lessonTitle,
-          courseId,
+          courseId: courseData.$id,
           videoPath: videoFileUrl,
         });
         
+        newLessons.push(lesson.$id); // Add lesson ID to array
         setUploadProgress(((i + 1) / totalFiles) * 100);
       }
+    
+      
+      // Update local course data
+      setCourseData({
+        ...courseData,
+      });
       
       // Reset form
       setLessonTitle("");
       setVideoFiles([]);
       setUploadProgress(0);
+      
+      // Show success message
+      setErrors({ success: `Successfully added ${totalFiles} lesson${totalFiles > 1 ? 's' : ''} to the course!` });
       
     } catch (error) {
       console.error("Error adding lessons:", error);
@@ -112,7 +126,7 @@ const AddLesson = () => {
     setCourseName("");
     setLessonTitle("");
     setVideoFiles([]);
-    setCourseId("");
+    setCourseData(null);
     setCourseFound(null);
     setErrors({});
   };
@@ -181,28 +195,113 @@ const AddLesson = () => {
 
               {/* Course Status */}
               {courseFound !== null && (
-                <div className={`p-4 rounded-xl flex items-center space-x-3 ${
+                <div className={`rounded-xl ${
                   courseFound 
                     ? 'bg-green-50 border border-green-200' 
                     : 'bg-red-50 border border-red-200'
                 }`}>
                   {courseFound ? (
-                    <>
-                      <CheckCircle className="w-6 h-6 text-green-600" />
-                      <span className="text-green-800 font-semibold">Course found! You can now add lessons.</span>
-                    </>
+                    <div className="p-6">
+                      <div className="flex items-start space-x-3 mb-4">
+                        <CheckCircle className="w-6 h-6 text-green-600 mt-1" />
+                        <div className="flex-1">
+                          <span className="text-green-800 font-bold text-lg block">Course Found!</span>
+                          <span className="text-green-700 text-sm">Please confirm this is the correct course before adding lessons.</span>
+                        </div>
+                      </div>
+                      
+                      {/* Course Details Card */}
+                      <div className="bg-white rounded-lg p-5 border border-green-200 shadow-sm">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <h3 className="font-bold text-gray-800 text-xl mb-2">{courseData?.title}</h3>
+                            <p className="text-gray-600 text-sm mb-3 line-clamp-3">{courseData?.description}</p>
+                            
+                            <div className="space-y-2">
+                              <div className="flex items-center space-x-2">
+                                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Author:</span>
+                                <span className="text-sm text-gray-700">{courseData?.author}</span>
+                              </div>
+                              
+                              <div className="flex items-center space-x-2">
+                                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Duration:</span>
+                                <span className="text-sm text-gray-700">{courseData?.duration}</span>
+                              </div>
+                              
+                              <div className="flex items-center space-x-2">
+                                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Price:</span>
+                                <span className="text-sm text-gray-700">₹{courseData?.price}</span>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div>
+                            <div className="mb-4">
+                              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-2">Current Status:</span>
+                              <div className="flex items-center space-x-4">
+                                <div className="text-center">
+                                  <div className="text-2xl font-bold text-blue-600">{courseData?.lessons?.length || 0}</div>
+                                  <div className="text-xs text-gray-500">Lessons</div>
+                                </div>
+                                <div className="text-center">
+                                  <div className="text-2xl font-bold text-purple-600">{courseData?.tags?.length || 0}</div>
+                                  <div className="text-xs text-gray-500">Tags</div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {courseData?.tags && courseData.tags.length > 0 && (
+                              <div>
+                                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-2">Tags:</span>
+                                <div className="flex flex-wrap gap-1">
+                                  {courseData.tags.slice(0, 6).map((tag, index) => (
+                                    <span 
+                                      key={index} 
+                                      className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
+                                    >
+                                      {tag}
+                                    </span>
+                                  ))}
+                                  {courseData.tags.length > 6 && (
+                                    <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+                                      +{courseData.tags.length - 6} more
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        <div className="mt-4 pt-4 border-t border-gray-200">
+                          <div className="flex items-center justify-between text-xs text-gray-500">
+                            <span>Course ID: {courseData?.$id}</span>
+                            <span>Created: {new Date(courseData?.$createdAt).toLocaleDateString()}</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4 p-3 bg-green-100 rounded-lg border border-green-300">
+                        <div className="flex items-center space-x-2">
+                          <CheckCircle className="w-5 h-5 text-green-600" />
+                          <span className="text-green-800 font-semibold text-sm">
+                            ✓ This is the course where your lessons will be added
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   ) : (
-                    <>
+                    <div className="p-4 flex items-center space-x-3">
                       <AlertCircle className="w-6 h-6 text-red-600" />
                       <span className="text-red-800 font-semibold">Course not found. Please check the name and try again.</span>
-                    </>
+                    </div>
                   )}
                 </div>
               )}
             </div>
 
             {/* Lesson Details Section */}
-            {courseFound && (
+            {courseFound && courseData && (
               <div className="space-y-6 border-t border-slate-200 pt-8">
                 <div>
                   <label className="block text-sm font-semibold text-slate-700 mb-2">
@@ -290,6 +389,14 @@ const AddLesson = () => {
                         style={{ width: `${uploadProgress}%` }}
                       ></div>
                     </div>
+                  </div>
+                )}
+
+                {/* Success Message */}
+                {errors.success && (
+                  <div className="p-4 bg-green-50 border border-green-200 rounded-xl flex items-center space-x-3">
+                    <CheckCircle className="w-6 h-6 text-green-600" />
+                    <span className="text-green-800">{errors.success}</span>
                   </div>
                 )}
 
