@@ -66,7 +66,7 @@ async getEnrolledStudentsForCourse(courseId) {
       const response = await this.databases.listDocuments(
         env.databaseId,
         env.collectionId,
-        [Query.equal("title", courseName)]
+        [Query.search("title", courseName)]
       );
       if (response.documents.length === 0) {
         throw new Error("Course not found");
