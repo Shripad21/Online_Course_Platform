@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Trash2, Edit3, Users, Clock, DollarSign, Tag } from "lucide-react";
+import { Trash2, Edit3, Users, Clock, IndianRupee, Tag } from "lucide-react";
 import appwriteService from "../appwrite/conf";
 import EnrolledStudents from "./EnrolledStudents";
 import env from "../env/env";
@@ -191,7 +191,7 @@ function YourCourses() {
                   {/* Course Metadata */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                     <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                      <DollarSign className="w-5 h-5 text-green-600" />
+                      <IndianRupee className="w-5 h-5 text-green-600" />
                       <div>
                         <p className="text-xs text-slate-500 uppercase tracking-wide">Price</p>
                         <p className="font-semibold text-slate-800">{formatPrice(course.price)}</p>
