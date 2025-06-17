@@ -80,7 +80,7 @@ function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         {/* Featured Course */}
         {featuredCourse && (
-          <div className="mb-16">
+          <div className="mb-16 -m-12">
             <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
               <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-6">
                 <h2 className="text-3xl font-bold text-white flex items-center">
