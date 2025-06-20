@@ -33,7 +33,7 @@ function TeacherProfile() {
       try {
         const res = await appwriteService.databases.listDocuments(
           env.databaseId,
-          "684fff9b0027262f01cd", // teacherProfiles collection ID
+          "68543868002d4b911194", // teacherProfiles collection ID
           [Query.equal("userId", user.$id)]
         );
         if (res.documents.length > 0) {
@@ -85,7 +85,7 @@ function TeacherProfile() {
       if (documentId) {
         await appwriteService.databases.updateDocument(
           env.databaseId,
-          "684fff9b0027262f01cd",
+          "68543868002d4b911194",
           documentId,
           payload
         );
@@ -93,7 +93,7 @@ function TeacherProfile() {
       } else {
         const newDoc = await appwriteService.databases.createDocument(
           env.databaseId,
-          "684fff9b0027262f01cd",
+          "68543868002d4b911194",
           ID.unique(),
           payload
         );

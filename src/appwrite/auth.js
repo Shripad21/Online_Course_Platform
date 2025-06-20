@@ -22,7 +22,7 @@ class AuthService {
   if (role === "student") {
     await this.databases.createDocument(
       env.databaseId,
-      "684ffe72002cf6eb28d6",
+      "68543783002ac0308cf3",
       ID.unique(),
       { userId },
       commonPermissions
@@ -30,7 +30,7 @@ class AuthService {
   } else if (role === "teacher") {
     await this.databases.createDocument(
       env.databaseId,
-      "684fff9b0027262f01cd",
+      "68543868002d4b911194",
       ID.unique(),
       { userId},
       commonPermissions

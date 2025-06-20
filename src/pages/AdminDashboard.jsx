@@ -145,7 +145,7 @@ function AdminDashboard() {
   const deleteCourse = async (courseId) => {
     if (window.confirm("Are you sure you want to delete this course?")) {
       try {
-        await appwriteService.databases.deleteDocument(env.databaseId, "67419e310012c35445c5", courseId); // your Courses collection ID
+        await appwriteService.databases.deleteDocument(env.databaseId, "68543414000a2ca40d02", courseId); // your Courses collection ID
         setCourses(prev => prev.filter(c => c.$id !== courseId));
         alert("Course deleted successfully.");
         fetchData(); // Refresh data to update stats

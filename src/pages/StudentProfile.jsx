@@ -34,7 +34,7 @@ function StudentProfile() {
       try {
         const res = await appwriteService.databases.listDocuments(
           env.databaseId,
-          "684ffe72002cf6eb28d6", // studentProfiles collection ID
+          "68543783002ac0308cf3", // studentProfiles collection ID
           [Query.equal("userId", user.$id)]
         );
         if (res.documents.length > 0) {
@@ -93,14 +93,14 @@ function StudentProfile() {
       if (docId) {
         await appwriteService.databases.updateDocument(
           env.databaseId,
-          "684ffe72002cf6eb28d6",
+          "68543783002ac0308cf3",
           docId,
           payload
         );
       } else {
         const newDoc = await appwriteService.databases.createDocument(
           env.databaseId,
-          "684ffe72002cf6eb28d6",
+          "68543783002ac0308cf3",
           ID.unique(),
           payload
         );

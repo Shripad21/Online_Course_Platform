@@ -166,7 +166,7 @@ if (role !== 'teacher' && role !== 'admin') {
          $permissions: [
       Permission.read(Role.any()),
       Permission.write(Role.user(user.$id)),
-      Permission.write(Role.user('6830ae4a0000370be320'))
+      Permission.write(Role.user('68544077002b0eabb093'))
     ]
         },
       );
