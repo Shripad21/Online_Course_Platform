@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import appwriteService from "../appwrite/conf";
+import { useSelector } from "react-redux";
 
 function Home() {
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const fetchCourses = async () => {

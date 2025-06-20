@@ -35,7 +35,7 @@ function Header() {
           <Link to="/">
             <Logo width="70px" logoPath={logoPath} />
           </Link>
-
+<h1>Welcome, {user.name}</h1>
           {/* Desktop Menu */}
           <ul className="hidden md:flex items-center space-x-6">
             {navItems.map(
