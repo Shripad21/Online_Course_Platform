@@ -173,6 +173,7 @@ async getEnrolledStudentsForCourse(courseId) {
 
   async getCurrentUserWithRole() {
   try {
+    
     const user = await this.account.get();
     const profile = await this.getUserRole(user.$id); // Fetch role from `userProfiles`
     return { ...user, role: profile?.role || null ,enrolledCourses: profile?.enrolledCourses || [] };

@@ -9,7 +9,7 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const authStatus = useSelector((state) => state.auth.status);
   const user = useSelector((state) => state.auth.userData);
-  const role = user?.role;
+  const role = user?.role || "guest";
   const navigate = useNavigate();
   console.log(role);
   const navItems = [
@@ -35,7 +35,8 @@ function Header() {
           <Link to="/">
             <Logo width="70px" logoPath={logoPath} />
           </Link>
-<h1>Welcome, {user.name}</h1>
+{/* {user ? <p>{user.name}</p> : <p>Welcome, Guest</p>} */}
+
           {/* Desktop Menu */}
           <ul className="hidden md:flex items-center space-x-6">
             {navItems.map(
